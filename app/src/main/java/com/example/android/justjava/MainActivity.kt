@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createOrderSummary(price: Int): String {
         var priceMessage = ""
-        priceMessage += "Name: Robin Heathcote\n"
+        priceMessage += "Name: " + getCustomerName() + "\n"
         priceMessage += hasWhippedCream() + " whipped cream\n"
         priceMessage += hasChocolate() + " chocolate\n"
         priceMessage += "Quantity: $quantity\n"
@@ -74,6 +74,11 @@ class MainActivity : AppCompatActivity() {
             true -> "With"
             false -> "Without"
         }
+    }
+
+    private fun getCustomerName(): String {
+        val name = findViewById<View>(R.id.customer_name_view) as TextView
+        return name.getText().toString()
     }
 
     /**
