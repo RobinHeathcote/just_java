@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
         displayMessage(summary)
     }
 
-    fun increment() {
+    fun increment(view: View) {
         quantity += 1
         displayQuantity(quantity)
     }
 
-    fun decrement() {
+    fun decrement(view: View) {
         quantity -=  1
         displayQuantity(quantity)
     }
@@ -43,7 +43,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createOrderSummary(price: Int): String {
-        return "Name: Robin Heathcote\n" + getWhippedCreamValue() +  " whipped cream " +  "\n Quantity: $quantity \n Total: $ $price \n Thankyou!"
+        var priceMessage = ""
+        priceMessage += "Name: Robin Heathcote\n"
+        priceMessage += hasWhippedCream() + " whipped cream\n"
+        priceMessage += hasChocolate() + " chocolate\n"
+        priceMessage += "Quantity: $quantity\n"
+        priceMessage += "Total: $ $price \n Thankyou!"
+        return priceMessage
     }
 
     /**
@@ -54,12 +60,20 @@ class MainActivity : AppCompatActivity() {
         quantityTextView.text = number.toString()
     }
 
-    private fun getWhippedCreamValue(): String {
+    private fun hasWhippedCream(): String {
         val whippedCream = findViewById<View>(R.id.whipped_cream_checkbox) as CheckBox
        return when (whippedCream.isChecked) {
            true -> "With"
            false -> "Without"
        }
+    }
+
+    private fun hasChocolate(): String {
+        val whippedCream = findViewById<View>(R.id.chocolate_checkbox) as CheckBox
+        return when (whippedCream.isChecked) {
+            true -> "With"
+            false -> "Without"
+        }
     }
 
     /**
