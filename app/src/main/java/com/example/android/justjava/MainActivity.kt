@@ -4,6 +4,7 @@ package com.example.android.justjava
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.CheckBox
 import android.widget.TextView
 import java.text.NumberFormat
 
@@ -23,16 +24,16 @@ class MainActivity : AppCompatActivity() {
      * This method is called when the order button is clicked.
      */
     fun submitOrder(view: View) {
-        var summary = createOrderSummary(calculatePrice())
+        val summary = createOrderSummary(calculatePrice())
         displayMessage(summary)
     }
 
-    fun increment(view: View) {
+    fun increment() {
         quantity += 1
         displayQuantity(quantity)
     }
 
-    fun decrement(view: View) {
+    fun decrement() {
         quantity -=  1
         displayQuantity(quantity)
     }
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createOrderSummary(price: Int): String {
-        return "Name: Robin Heathcote" + "\n Quantity: $quantity \n Total: $price \n Thankyou!"
+        return "Name: Robin Heathcote\n" + getWhippedCreamValue() +  " whipped cream " +  "\n Quantity: $quantity \n Total: $ $price \n Thankyou!"
     }
 
     /**
@@ -50,22 +51,22 @@ class MainActivity : AppCompatActivity() {
      */
     private fun displayQuantity(number: Int) {
         val quantityTextView = findViewById<View>(R.id.quantity_text_view) as TextView
-        quantityTextView.text = "" + number
+        quantityTextView.text = number.toString()
     }
 
-    /**
-     * This method displays the given price on the screen.
-     */
-    private fun displayPrice(number: Int) {
-        val priceTextView = findViewById<View>(R.id.price_text_view) as TextView
-        priceTextView.text = NumberFormat.getCurrencyInstance().format(number.toLong())
+    private fun getWhippedCreamValue(): String {
+        val whippedCream = findViewById<View>(R.id.whipped_cream_checkbox) as CheckBox
+       return when (whippedCream.isChecked) {
+           true -> "With"
+           false -> "Without"
+       }
     }
 
     /**
      * This method displays the given text on the screen.
      */
     private fun displayMessage(message: String) {
-        val priceTextView = findViewById<View>(R.id.price_text_view) as TextView
-        priceTextView.text = message
+        val orderSummaryTextView = findViewById<View>(R.id.order_summary_text_view) as TextView
+        orderSummaryTextView.text = message
     }
 }
