@@ -1,6 +1,7 @@
 package com.example.android.justjava
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     fun submitOrder(view: View) {
         val summary = createOrderSummary(calculatePrice())
         displayMessage(summary)
+        sendOrder(summary)
     }
 
     fun increment(view: View) {
@@ -113,5 +115,19 @@ class MainActivity : AppCompatActivity() {
     private fun displayMessage(message: String) {
         val orderSummaryTextView = findViewById<View>(R.id.order_summary_text_view) as TextView
         orderSummaryTextView.text = message
+    }
+
+    private fun sendOrder(order: String) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_EMAIL, "test@test.com")
+            putExtra(Intent.EXTRA_SUBJECT, "New coffee order incoming")
+            putExtra(Intent.EXTRA_TEXT, order )
+            type = "text/plain"
+        }
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
     }
 }
