@@ -12,8 +12,9 @@ import java.text.NumberFormat
  * This app displays an order form to order coffee.
  */
 class MainActivity : AppCompatActivity() {
-    internal var quantity = 2
-    internal var price = 5
+    private var quantity = 2
+    private var price = 5
+    private var extrasPrice = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +40,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculatePrice(): Int {
+        if (hasWhippedCream() && hasChocolate()) {
+            return quantity * (price + (extrasPrice * 2))
+        } else if (hasWhippedCream() || hasChocolate()) {
+            return quantity * (price + extrasPrice)
+        }
         return quantity * price
     }
 
     private fun createOrderSummary(price: Int): String {
         var priceMessage = ""
         priceMessage += "Name: " + getCustomerName() + "\n"
-        priceMessage += hasWhippedCream() + " whipped cream\n"
-        priceMessage += hasChocolate() + " chocolate\n"
+        priceMessage += printHasWhippedCream() + " whipped cream\n"
+        priceMessage += printHasChocolate() + " chocolate\n"
         priceMessage += "Quantity: $quantity\n"
         priceMessage += "Total: $ $price \n Thankyou!"
         return priceMessage
@@ -60,17 +66,25 @@ class MainActivity : AppCompatActivity() {
         quantityTextView.text = number.toString()
     }
 
-    private fun hasWhippedCream(): String {
-        val whippedCream = findViewById<View>(R.id.whipped_cream_checkbox) as CheckBox
-       return when (whippedCream.isChecked) {
+    private fun hasWhippedCream(): Boolean {
+        val checkBox = findViewById<View>(R.id.whipped_cream_checkbox) as CheckBox
+        return checkBox.isChecked
+    }
+
+    private fun hasChocolate(): Boolean {
+        val checkBox = findViewById<View>(R.id.chocolate_checkbox) as CheckBox
+        return checkBox.isChecked
+    }
+
+    private fun printHasWhippedCream(): String {
+       return when (hasWhippedCream()) {
            true -> "With"
            false -> "Without"
        }
     }
 
-    private fun hasChocolate(): String {
-        val whippedCream = findViewById<View>(R.id.chocolate_checkbox) as CheckBox
-        return when (whippedCream.isChecked) {
+    private fun printHasChocolate(): String {
+        return when (hasChocolate()) {
             true -> "With"
             false -> "Without"
         }
