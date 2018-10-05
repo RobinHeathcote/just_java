@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import java.text.NumberFormat
+import kotlin.text.Typography.less
 
 /**
  * This app displays an order form to order coffee.
@@ -30,13 +32,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun increment(view: View) {
-        quantity += 1
-        displayQuantity(quantity)
+        if (quantity + 1 > 20) {
+            val toast = Toast.makeText(applicationContext, "Cannot order more than 20 coffees", Toast.LENGTH_SHORT)
+            toast.show()
+        } else {
+            quantity += 1
+            displayQuantity(quantity)
+        }
     }
 
     fun decrement(view: View) {
-        quantity -=  1
-        displayQuantity(quantity)
+        if (quantity - 1 < 1) {
+            val toast = Toast.makeText(applicationContext, "Cannot order less than 1 coffee", Toast.LENGTH_SHORT)
+            toast.show()
+        } else {
+            quantity -= 1
+            displayQuantity(quantity)
+        }
     }
 
     private fun calculatePrice(): Int {
